@@ -1,17 +1,25 @@
-const prompt = require('prompt')
+const prompt = require('prompt');
 
-const count = 1
+const GIT_HUB_URL = require('./utils/getDataFromGithub');
 
-const prompt_attributes = [{
-  name: 'githubUser',
-}]
+const promptAttributes = [
+  {
+    name: 'githubUser',
+  },
+];
 
-prompt.get(prompt_attributes, (err, result) => {
+prompt.get(promptAttributes, async (err, result) => {
   if (err) {
     console.log(err);
     return 1;
   }
+  const user = result.githubUser;
+  if (!user) {
+    console.log('El usuario no puede estar vacio');
+    return 1;
+  }
+  await GIT_HUB_URL(user);
   console.log('Command-line received data:');
-})
+});
 
-prompt.start()
+prompt.start();
